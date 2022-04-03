@@ -1,15 +1,37 @@
 # здесь нужен импорт модуля, содержащего в себе класс UserOutput
 
-# первый режим работы: возвращаем лучший вклад по кол-ву полученных денег
 def find_profitable_deposit(all_deposits, user_input):
+    """Нахождение лучшего вклада.
+
+    Аргументы:
+
+    all_deposits: Список всех вкладов.
+
+    user_input: Начальная сумма вклада пользователя.
+
+    Возвращает:
+
+    Лучший вклад по количеству денег, которые можно получить в конце срока вклада.
+    """
     user_amount = user_input.amount
     suitable_contributions = identify_suitable_contributions(all_deposits, user_amount)
     best_deposit_info = find_profitable_deposit_info(suitable_contributions)
     return UserOutput(user_input, best_deposit_info[0], best_deposit_info[1])
 
-
-# второй режим работы: возвращаем несколько лучших вкладов с учетом выбора кол-ва месяцев
 def find_profitable_deposits(all_deposits, user_input):
+    """Нахождение нескольких лучших вкладов.
+
+    Аргументы:
+
+    all_deposits: Список всех вкладов.
+
+    user_input: Начальная сумма вклада пользователя.
+
+    Возвращает:
+
+    Список лучших вкладов по количеству денег, которые можно получить в конце срока вклада, с учетом выбора
+    количества месяцев.
+    """
     user_amount = user_input.amount
     suitable_contributions = identify_suitable_contributions(all_deposits, user_amount)
     contrib_dict = divide_contributions(suitable_contributions)
@@ -22,6 +44,17 @@ def find_profitable_deposits(all_deposits, user_input):
 
 
 def divide_contributions(suitable_contributions):
+    """Разделение вкладов на группы по количеству месяцев.
+
+    Аргументы:
+
+    suitable_contributions: Список вкладов, подходящих пользователю.
+
+    Возвращает:
+
+    Словарь, в котором ключом является количество месяцев, а значением -
+    список вкладов со сроком, равным этому количеству месяцев.
+    """
     dictionary = dict()
     for contribution in suitable_contributions:
         month_number = contribution.months_number
@@ -33,6 +66,17 @@ def divide_contributions(suitable_contributions):
 
 
 def get_best_contributions_info(dictionary):
+    """Нахождение .
+
+    Аргументы:
+
+    suitable_contributions: Список вкладов, подходящих пользователю.
+
+    Возвращает:
+
+    Словарь, в котором ключом является количество месяцев, а значением -
+    список вкладов со сроком, равным этому количеству месяцев.
+    """
     best_contributions_info = []
     for month in dictionary:
         contributions = dictionary[month]
@@ -42,14 +86,50 @@ def get_best_contributions_info(dictionary):
 
 
 def get_total_money_amount(start_sum, percent, months_number):
+    """Вычисление итоговой суммы денег, которую получит пользователь в конце срока вклада.
+
+    Аргументы:
+
+    start_sum: Начальная сумма клада.
+
+    percent: Процент, который начисляется каждый месяц на сумму вклада.
+
+    months_number: Срок действия вклада.
+
+    Возвращает:
+
+    Сумма денег, которую получит пользователь в конце срока действия вклада.
+    """
     return ((1 + percent / 100) ** months_number) * start_sum
 
 
 def identify_suitable_contributions(all_deposits, user_amount):
+    """Нахождение подходящих вкладов для пользователя. Вклад считается подходящим, если сумма денег,
+     которую пользователь хочет положить в банк, больше либо равна начальной сумме вклада.
+
+     Аргументы:
+     all_deposits: Список всех вкладов.
+
+     user_amount: Начальная сумма вклада пользователя.
+     Возвращает:
+
+     Список вкладов, подходящих пользователю.
+     """
     return list(filter(lambda deposit: user_amount >= deposit.minimum_amount, all_deposits))
 
 
 def find_profitable_deposit_info(contributions):
+    """Нахождение информации о лучшем вкладе из списка вкладов.
+
+    Аргументы:
+
+    contributions: Список вкладов.
+
+    Возвращает:
+
+    Максимальная сумма, которую можно получить в конце срока вклада, и  вклад,
+    который даёт максимальную сумму вконце своего срока.
+    """
     max_deposit_amount = 0
     best_deposit = contributions[0]
     for contribution in contributions:
