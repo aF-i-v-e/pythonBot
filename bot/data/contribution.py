@@ -1,29 +1,29 @@
 class Contribution:
-    __contribution_percentage = 0
-    __contribution_minimum_amount = 0
-    __contribution_term = 0
+    __percent = 0
+    __start_sum = 0
+    __months_number = 0
     __replenishment_in_process = False
     __bank_name = ""
     __contribution_name = ""
-    __service_price = 0
+    __package_services_price = 0
 
-    def get_contribution_percentage(self):
-        return self.__contribution_percentage
+    def get_percent(self):
+        return self.__percent
 
-    def set_contribution_percentage(self, contribution_percentage):
-        self.__contribution_percentage = contribution_percentage
+    def set_percent(self, contribution_percentage):
+        self.__percent = contribution_percentage
 
-    def get_contribution_minimum_amount(self):
-        return self.__contribution_minimum_amount
+    def get_start_sum(self):
+        return self.__start_sum
 
-    def set_contribution_minimum_amount(self, contribution_minimum_amount):
-        self.__contribution_minimum_amount = contribution_minimum_amount
+    def set_start_sum(self, contribution_minimum_amount):
+        self.__start_sum = contribution_minimum_amount
 
-    def get_contribution_term(self):
-        return self.__contribution_term
+    def get_months_number(self):
+        return self.__months_number
 
-    def set_contribution_term(self, contribution_term):
-        self.__contribution_term = contribution_term
+    def set_months_number(self, contribution_term):
+        self.__months_number = contribution_term
 
     def get_replenishment_in_process(self):
         return self.__replenishment_in_process
@@ -43,8 +43,8 @@ class Contribution:
     def set_contribution_name(self, contribution_name):
         self.__contribution_name = contribution_name
 
-    def get_service_price(self):
-        return self.__service_price
+    def get_package_services_price(self):
+        return self.__package_services_price
 
-    def set_service_price(self, service_price):
-        self.__service_price = service_price
+    def set_package_services_price(self, service_price):
+        self.__package_services_price = service_price
