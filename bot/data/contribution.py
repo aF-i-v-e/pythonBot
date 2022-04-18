@@ -2,7 +2,6 @@ class Contribution:
     __percent = 0
     __start_sum = 0
     __months_number = 0
-    __replenishment_in_process = False
     __bank_name = ""
     __contribution_name = ""
     __package_services_price = 0
@@ -24,12 +23,6 @@ class Contribution:
 
     def set_months_number(self, contribution_term):
         self.__months_number = contribution_term
-
-    def get_replenishment_in_process(self):
-        return self.__replenishment_in_process
-
-    def set_replenishment_in_process(self, replenishment_in_process):
-        self.__replenishment_in_process = replenishment_in_process
 
     def get_bank_name(self):
         return self.__bank_name
