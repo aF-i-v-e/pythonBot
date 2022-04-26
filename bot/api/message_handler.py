@@ -4,7 +4,7 @@ from telebot import types
 file = open('../../resourses/bot_info.txt', 'r')
 token = file.readline().split()[2]
 bot = telebot.TeleBot(token)
-amount = 0
+amount = -1
 name = ''
 
 
@@ -27,6 +27,7 @@ def check_messages(message):
     elif message.text == '/start':
         #    bot.register_next_step_handler(message, send_welcome)
         send_welcome(message)
+        bot.register_next_step_handler(message, ask_about_amount)
     else:
         bot.send_message(message.from_user.id, 'Я тебя не понимаю, нажми /start')
 
@@ -39,17 +40,23 @@ def send_welcome(message):
     bot.send_message(message.from_user.id, 'С моей помощью ты сможешь выбрать один из следующих банков: '
                                            'Альфа, втб и тд потом заполним')
     bot.send_message(message.from_user.id, 'Давай приступим! Введи сумму вклада')
-    bot.register_next_step_handler(message, ask_about_amount)
 
 
 def ask_about_amount(message):
     global amount
-    while amount <= 0:
-        try:
-            amount = int(message.text)
-        except Exception:
-            bot.send_message(message.from_user.id, 'Цифрами, пожалуйста')
+#    amount = -1
+    try:
+        amount = int(message.text)
+        if amount <= 0:
+            bot.send_message(message.from_user.id, 'Введи сумму повторно')
+            bot.register_next_step_handler(message, ask_about_amount)
+        bot.register_next_step_handler(message, clarify_amount)
+    except Exception:
+        bot.send_message(message.from_user.id, 'Цифрами, пожалуйста')
+        bot.register_next_step_handler(message, ask_about_amount)
 
+
+def clarify_amount(message):
     keyboard = types.InlineKeyboardMarkup()
     key_yes = types.InlineKeyboardButton(text='Да', callback_data='agreement')
     keyboard.add(key_yes)
