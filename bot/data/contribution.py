@@ -6,6 +6,14 @@ class Contribution:
     __contribution_name = ""
     __package_services_price = 0
 
+    def __init__(self, percent, start_sum, month_number, bank_name, contribution_name, package_services_price):
+        self.__percent = percent
+        self.__start_sum = start_sum
+        self.__months_number = month_number
+        self.__bank_name = bank_name
+        self.__contribution_name = contribution_name
+        self.__package_services_price = package_services_price
+
     def get_percent(self):
         return self.__percent
 
@@ -41,3 +49,20 @@ class Contribution:
 
     def set_package_services_price(self, service_price):
         self.__package_services_price = service_price
+
+    def equals(self, other_contribution):
+        return (
+                self.__percent == other_contribution.get_percent()
+                and self.__start_sum == other_contribution.get_start_sum()
+                and self.__months_number == other_contribution.get_months_number()
+                and self.__bank_name == other_contribution.get_bank_name()
+                and self.__contribution_name == other_contribution.get_contribution_name()
+                and self.__package_services_price == other_contribution.get_package_services_price())
+
+    def get_string_representation(self):
+        return f"Банк: {self.__bank_name}, " \
+               f"Вклад: {self.__contribution_name}, " \
+               f"Процент: {self.__percent}%, " \
+               f"Срок вклада: {self.__months_number}, " \
+               f"Минимальная начальная сумма вклада: {self.__start_sum} рублей, " \
+               f"Стоимость пакета услуг: {self.__package_services_price} рублей."
