@@ -1,0 +1,11 @@
+class BotResponseConstants:
+    sorry_response = 'Извините, но бот не смог подобрать выгодный вклад.'
+    push_start_response = 'Нажми /start'
+    not_understand_response = 'Я тебя не понимаю, нажми /start'
+    welcome_response1 = 'Я умный бот, который поможет тебе разобраться с правильным вложением твоих денег!'
+    welcome_response2 = 'С моей помощью ты сможешь выбрать один из следующих банков: Альфа, втб и тд потом заполним'
+    welcome_response3 = 'Давай приступим! Введи сумму вклада'
+    input_sum_response = 'Введи сумму повторно'
+    digits_please_response =  'Цифрами, пожалуйста'
+    make_deposit_response = 'Ты хочешь оформить вклад на сумму: '
+    look_options = 'Класс! Вот, посмотри подобранные мной варианты:'
