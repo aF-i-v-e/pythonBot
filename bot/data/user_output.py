@@ -1,36 +1,43 @@
 from bot.api import user_input
-from bot.data import contribution
+import contribution
+
+"""Класс, который хранит информацию о том, что выведем пользователю"""
 
 
 class UserOutput:
-    __user_input = user_input.UserInput
-    __final_amount_contribution = 0
-    __contribution = contribution.Contribution
+    # """Класс, который хранит информацию о введенных пользователем данных"""
+    # """Конечная сумма вклада, которую он получит в конце срока"""
+    # """Информация о вкладе"""
 
-    def __init__(self, user_input, total_money_amount, best_contribution):
-        self.__user_input = user_input
-        self.__final_amount_contribution = total_money_amount
-        self.__contribution = best_contribution
+    def __init__(self):
+        self._user_input = user_input.UserInput("", 0)
+        self._total_money_amount = 0
+        self._contribution = contribution.Contribution()
+
+    def UserOutput(self, user_input, total_money_amount, contribution):
+        self._user_input = user_input
+        self._total_money_amount = total_money_amount
+        self._contribution = contribution
 
     def get_user_input(self):
-        return self.__user_input
+        return self._user_input
 
     def set_user_input(self, user_input):
-        self.__user_input = user_input
+        self._user_input = user_input
 
-    def get_final_amount_contribution(self):
-        return self.__final_amount_contribution
+    def get_total_money_amount(self):
+        return self._total_money_amount
 
-    def set_final_amount_contribution(self, final_amount_contribution):
-        self.__final_amount_contribution = final_amount_contribution
+    def set_total_money_amount(self, final_amount_contribution):
+        self._total_money_amount = final_amount_contribution
 
     def get_contribution(self):
-        return self.__contribution
+        return self._contribution
 
     def set_contribution(self, bank_contribution):
-        self.__contribution = bank_contribution
+        self._contribution = bank_contribution
 
     def get_string_representation(self):
-        return self.__user_input.get_string_representation()\
-               + self.__contribution.get_string_representation\
-               + f"Итоговая сумма по данному вкладу будет составлять {self.__final_amount_contribution} рублей.\n"
+        return self._user_input.get_string_representation()\
+               + self._contribution.get_string_representation\
+               + f"Итоговая сумма по данному вкладу будет составлять {self._total_money_amount} рублей.\n"
