@@ -4,6 +4,8 @@ from bot.data.banks_parsing import connect
 
 user_agent = {'User-agent': 'Mozilla/5.0'}
 
+"""Парсинг Вуз Банк Вклад «Надёжный»"""
+
 
 class VuzBank1:
 

@@ -47,6 +47,8 @@ class ContributionManager:
                 return
             self._list.append(contribution)
 
+    """Вывод сообщения о некорректности вклада"""
+
     def error_message(self, contribution):
         print("Вклад некорректен " + contribution.get_bank_name() + " " + contribution.get_contribution_name())
 

@@ -1,3 +1,6 @@
+"""Класс, хранящий данные вклада"""
+
+
 class Contribution:
 
     def __init__(self):
