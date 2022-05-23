@@ -4,6 +4,17 @@ from bot.response.bot_response_constants import BotResponseConstants
 
 
 def create_response_with_contribution(user_input):
+    """Формирование ответа пользователю на запрос о лучшем вкладе
+
+      Аргументы:
+
+      user_input: Входные данные пользователя.
+
+      Возвращает:
+
+      Строка, представляющая собой user_output, если подходящий вклад найден, или строка с извининениями
+      о том, что лучший вклад на основе введенных им данных не найден
+      """
     parsing = Parsing()
     contributions = parsing.get_list_contributions()
     user_output = find_best_contribution(contributions, user_input)

@@ -85,3 +85,4 @@
    на основе user_input
    3. Месяца, доступные для того, чтобы вынести их в кнопочки - month_count_buttons_info.py
 2. Заменить все строки в message_handler.py на строковые константы из bot_response_constants.py
+3. Документация

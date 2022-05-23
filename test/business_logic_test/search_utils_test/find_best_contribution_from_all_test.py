@@ -4,7 +4,7 @@ from bot.business_logic.search_utils.find_best_contribution_from_all import find
 from test.business_logic_test import create_test_data
 
 
-class FidBestContributionFromAllTest(unittest.TestCase):
+class FindBestContributionFromAllTest(unittest.TestCase):
     def test_find_best_contribution_from_all(self):
         test_cases = create_test_data.get_test_user_input_case1()
         contribution_dict = create_test_data.get_test_dict_case1()

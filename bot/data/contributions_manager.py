@@ -1,4 +1,4 @@
-from banks_parsing import *
+from bot.data.banks_parsing import *
 
 
 class Parsing:

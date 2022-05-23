@@ -1,4 +1,7 @@
 class BotResponseConstants:
+    """
+        Класс, содержащий в себе строковые константы, которые представляют собой ответ пользователю
+      """
     sorry_response = 'Извините, но бот не смог подобрать выгодный вклад.'
     push_start_response = 'Нажми /start'
     not_understand_response = 'Я тебя не понимаю, нажми /start'
