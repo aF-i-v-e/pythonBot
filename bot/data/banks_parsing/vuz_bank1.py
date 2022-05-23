@@ -13,9 +13,8 @@ class VuzBank1:
         self._url = "https://www.vuzbank.ru/chastnym-klientam/vklady/nakopitelnyy"
         self.contribution = contribution.Contribution()
         self._response = None
-        self.contributions = []
 
-    def get_contributions(self):
+    def get_contribution(self):
         try:
             bank_info = connect.Connect(self._url, user_agent)
         except Exception:
