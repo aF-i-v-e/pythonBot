@@ -15,6 +15,14 @@ answer = False
 
 @bot.message_handler(commands=['start'])
 def handle_start(message):
+    """Обработчик команды /start.
+
+        Аргументы:
+
+        message: полная информация от пользователя из телеграмма
+
+        Запускает бота и вызывает первые методы
+        """
     user_input('Человек', 0, 0)
     send_welcome(message)
     ask_about_term(message)
@@ -22,11 +30,27 @@ def handle_start(message):
 
 @bot.message_handler(commands=['help'])
 def handle_help(message):
+    """Обработчик команды /help.
+
+            Аргументы:
+
+            message: полная информация от пользователя из телеграмма
+
+            Дает справку как запустить бота
+            """
     bot.send_message(message.from_user.id, 'Нажми /start')
 
 
 @bot.message_handler(commands=['exit'])
 def handle_exit(message):
+    """Обработчик команды /exit.
+
+            Аргументы:
+
+            message: полная информация от пользователя из телеграмма
+
+            Останавливает бота
+            """
     user_input.set_name(user_input, new_name='Человек')
     user_input.set_amount(user_input, new_amount=0)
     user_input.set_month_count(user_input, new_term=0)
@@ -37,12 +61,28 @@ def handle_exit(message):
 
 @bot.message_handler(commands=['amount_again'])
 def handle_amount_again(message):
+    """Обработчик команды /amount_again.
+
+            Аргументы:
+
+            message: полная информация от пользователя из телеграмма
+
+            Спрашивает заново сумму от пользователя
+            """
     bot.send_message(message.from_user.id, 'Введи сумму вклада')
     bot.register_next_step_handler(message, ask_about_amount)
 
 
 @bot.message_handler(content_types=['text'])
 def handle_messages(message):
+    """Обработчик сообщений.
+
+            Аргументы:
+
+            message: полная информация от пользователя из телеграмма
+
+            Обрабатывает обычные сообщения от пользователя
+            """
     user_input.print_data(user_input)
     print('Срок' + str(term))
     if term == 0:
@@ -54,6 +94,12 @@ def handle_messages(message):
 
 
 def get_user_name(message):
+    """Метод узнает имя пользователя.
+
+            Аргументы:
+
+            message: полная информация от пользователя из телеграмма
+            """
     global name
     name = message.from_user.first_name
     user_input.set_name(user_input, new_name=name)
@@ -62,6 +108,12 @@ def get_user_name(message):
 
 
 def send_welcome(message):
+    """Бот присылает приветственные сообщения.
+
+            Аргументы:
+
+            message: полная информация от пользователя из телеграмма
+            """
     get_user_name(message)
     bot.send_message(message.from_user.id, 'Привет, ' + name + '!')
     bot.send_message(message.from_user.id, 'Я умный бот, который поможет тебе разобраться с правильным '
@@ -71,6 +123,12 @@ def send_welcome(message):
 
 
 def ask_about_term(message):
+    """Бот узнает, важен ли пользователю срок.
+
+            Аргументы:
+
+            message: полная информация от пользователя из телеграмма
+            """
     keyboard = types.InlineKeyboardMarkup()
     key_yes = types.InlineKeyboardButton(text='Выбрать срок', callback_data='agree_term')
     keyboard.add(key_yes)
@@ -81,6 +139,12 @@ def ask_about_term(message):
 
 
 def ask_about_term_next(message):
+    """Бот уточняет срок у пользователя.
+
+            Аргументы:
+
+            message: полная информация от пользователя из телеграмма
+            """
     global term
     term = 0
     user_input.set_month_count(user_input, new_term=0)
@@ -97,6 +161,12 @@ def ask_about_term_next(message):
 
 
 def ask_about_amount(message):
+    """Бот уточняет сумму у пользователя.
+
+                Аргументы:
+
+                message: полная информация от пользователя из телеграмма
+                """
     global amount
     amount = 0
     # user_input.set_amount(user_input, new_amount=0)
@@ -121,6 +191,12 @@ def ask_about_amount(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
+    """Обработчик кнопок у сообщений.
+
+                Аргументы:
+
+                message: полная информация от пользователя из телеграмма
+                """
     global term
     msg = call.message.chat.id
     if call.data == "disagree_term":
@@ -154,7 +230,7 @@ def callback_worker(call):
         bot.send_message(msg, 'Введи сумму вклада')
     if call.data == "agreement":
         bot.send_message(msg, 'Класс! Вот, посмотри подобранные мной варианты: ')
-        bot_response.create_response_with_contribution(user_input)
+        # bot_response.create_response_with_contribution(user_input)
     if call.data == "disagreement":
         bot.send_message(msg, 'Напиши /start')
     user_input.print_data(user_input)
