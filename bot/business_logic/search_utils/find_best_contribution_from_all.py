@@ -20,7 +20,7 @@ def find_best_contribution_from_all(contribution_dict, user_input):
         if len(value) == 0:
             continue
         user_output = get_best_contribution_from_list(value, user_input)
-        contribution_money_amount = user_output.get_final_amount_contribution()
+        contribution_money_amount = user_output.get_total_money_amount()
         profit_per_month = contribution_money_amount / key
 
         if result_contribution is None or profit_per_month > result_profit_per_month:

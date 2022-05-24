@@ -9,7 +9,7 @@ bot = telebot.TeleBot(token)
 amount = 0
 name = 'Человек'
 term = 0
-user_input = UserInput
+user_input = UserInput("", 0, 0)
 answer = False
 
 
@@ -23,7 +23,6 @@ def handle_start(message):
 
         Запускает бота и вызывает первые методы
         """
-    user_input('Человек', 0, 0)
     send_welcome(message)
     ask_about_term(message)
 
@@ -51,10 +50,10 @@ def handle_exit(message):
 
             Останавливает бота
             """
-    user_input.set_name(user_input, new_name='Человек')
-    user_input.set_amount(user_input, new_amount=0)
-    user_input.set_month_count(user_input, new_term=0)
-    user_input.print_data(user_input)
+    user_input.set_name(new_name='Человек')
+    user_input.set_amount(new_amount=0)
+    user_input.set_month_count(new_term=0)
+    user_input.print_data()
     bot.send_message(message.from_user.id, 'До новых сообщений!')
     bot.stop_polling()
 
@@ -83,7 +82,7 @@ def handle_messages(message):
 
             Обрабатывает обычные сообщения от пользователя
             """
-    user_input.print_data(user_input)
+    user_input.print_data()
     print('Срок' + str(term))
     if term == 0:
         bot.send_message(message.from_user.id, 'Я не понимаю тебя, нажми /help')
@@ -102,8 +101,8 @@ def get_user_name(message):
             """
     global name
     name = message.from_user.first_name
-    user_input.set_name(user_input, new_name=name)
-    user_input.print_data(user_input)
+    user_input.set_name(new_name=name)
+    user_input.print_data()
     print('Имя: ' + str(name))
 
 
@@ -147,7 +146,7 @@ def ask_about_term_next(message):
             """
     global term
     term = 0
-    user_input.set_month_count(user_input, new_term=0)
+    user_input.set_month_count(new_term=0)
     keyboard = types.InlineKeyboardMarkup()
     key_3months = types.InlineKeyboardButton(text='3 месяца', callback_data='3months')
     keyboard.add(key_3months)
@@ -169,7 +168,7 @@ def ask_about_amount(message):
                 """
     global amount
     amount = 0
-    # user_input.set_amount(user_input, new_amount=0)
+    # user_input.set_amount(new_amount=0)
     try:
         amount = abs(int(message.text))
     except Exception:
@@ -177,7 +176,7 @@ def ask_about_amount(message):
         bot.register_next_step_handler(message, ask_about_amount)
         return
     if amount > 0:
-        user_input.set_amount(user_input, new_amount=amount)
+        user_input.set_amount(new_amount=amount)
         keyboard = types.InlineKeyboardMarkup()
         key_yes = types.InlineKeyboardButton(text='Да', callback_data='agreement')
         keyboard.add(key_yes)
@@ -185,7 +184,7 @@ def ask_about_amount(message):
         keyboard.add(key_no)
         bot.send_message(message.from_user.id, text='Ты хочешь оформить вклад на сумму: ' + str(amount) + '?',
                          reply_markup=keyboard)
-    user_input.print_data(user_input)
+    user_input.print_data()
     print('Сумма: ' + str(amount))
 
 
@@ -201,39 +200,40 @@ def callback_worker(call):
     msg = call.message.chat.id
     if call.data == "disagree_term":
         term = 0.5
-        user_input.set_month_count(user_input, new_term=term)
+        user_input.set_month_count(new_term=term)
         bot.send_message(msg, 'Введи сумму вклада')
     if call.data == "agree_term":
         term = -1
-        user_input.set_month_count(user_input, new_term=term)
+        user_input.set_month_count(new_term=term)
         bot.send_message(msg, 'Отлично! Выбери срок')
         ask_about_term_next(msg)
     if call.data == "3months":
         term = 3
-        user_input.set_month_count(user_input, new_term=term)
+        user_input.set_month_count(new_term=term)
         bot.send_message(msg, 'Твой срок - 3 месяца')
         bot.send_message(msg, 'Введи сумму вклада')
     if call.data == "9months":
         term = 9
-        user_input.set_month_count(user_input, new_term=term)
+        user_input.set_month_count(new_term=term)
         bot.send_message(msg, 'Твой срок - 9 месяцев')
         bot.send_message(msg, 'Введи сумму вклада')
     if call.data == "1year":
         term = 12
-        user_input.set_month_count(user_input, new_term=term)
+        user_input.set_month_count(new_term=term)
         bot.send_message(msg, 'Твой срок - 1 год')
         bot.send_message(msg, 'Введи сумму вклада')
     if call.data == "more":
         term = 36
-        user_input.set_month_count(user_input, new_term=term)
+        user_input.set_month_count(new_term=term)
         bot.send_message(msg, 'Твой срок - более 1 года')
         bot.send_message(msg, 'Введи сумму вклада')
     if call.data == "agreement":
         bot.send_message(msg, 'Класс! Вот, посмотри подобранные мной варианты: ')
-        # bot_response.create_response_with_contribution(user_input)
+        result = bot_response.create_response_with_contribution(user_input)
+        bot.send_message(msg, str(result))
     if call.data == "disagreement":
         bot.send_message(msg, 'Напиши /start')
-    user_input.print_data(user_input)
+    user_input.print_data()
     print('Сумма: ' + str(amount))
     print('Срок: ' + str(term))
     print('Имя: ' + str(name))

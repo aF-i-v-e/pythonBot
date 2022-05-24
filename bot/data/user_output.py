@@ -1,5 +1,5 @@
 from bot.api import user_input
-import contribution
+from bot.data import contribution
 
 """Класс, который хранит информацию о том, что выведем пользователю"""
 
@@ -7,11 +7,11 @@ import contribution
 class UserOutput:
 
     def __init__(self):
-        self._user_input = user_input.UserInput("", 0)
+        self._user_input = user_input.UserInput("", 0, 0)
         self._total_money_amount = 0
         self._contribution = contribution.Contribution()
 
-    def UserOutput(self, user_input, total_money_amount, contribution):
+    def __init__(self, user_input, total_money_amount, contribution):
         self._user_input = user_input
         self._total_money_amount = total_money_amount
         self._contribution = contribution
@@ -35,6 +35,6 @@ class UserOutput:
         self._contribution = bank_contribution
 
     def get_string_representation(self):
-        return self._user_input.get_string_representation()\
-               + self._contribution.get_string_representation\
+        return str(self._user_input.get_string_representation())\
+               + str(self._contribution.get_string_representation())\
                + f"Итоговая сумма по данному вкладу будет составлять {self._total_money_amount} рублей.\n"
