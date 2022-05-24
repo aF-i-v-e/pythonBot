@@ -290,5 +290,4 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
-/resourсes/bot_info.txt
-/resourses/bot_info.txt
+/resources/bot_info.txt

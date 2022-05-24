@@ -9,7 +9,7 @@ class UserInput:
         self.month_count = month_count
 
     def print_data(self):
-        print(self.name, self.amount)
+        print('Имя: ' + str(self.name) + '   Сумма: ' + str(self.amount) + '   Срок: ' + str(self.month_count))
 
     def get_amount(self):
         return self.amount
@@ -23,3 +23,12 @@ class UserInput:
         if self.month_count == 0:
             return s1 + "Срок вклада: произвольный.\n"
         return s1 + f"Срок вклада: {self.month_count}.\n"
+
+    def set_name(self, new_name):
+        self.name = new_name
+
+    def set_amount(self, new_amount):
+        self.amount = new_amount
+
+    def set_month_count(self, new_term):
+        self.month_count = new_term
