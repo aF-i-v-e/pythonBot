@@ -3,7 +3,7 @@ import create_test_data
 from bot.business_logic.find_best_contribution import find_best_contribution
 
 
-class FidBestContributionTest(unittest.TestCase):
+class FindBestContributionTest(unittest.TestCase):
     def test_find_best_contribution(self):
         test_cases = [
             [

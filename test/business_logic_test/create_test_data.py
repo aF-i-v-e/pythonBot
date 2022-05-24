@@ -32,6 +32,10 @@ def get_test_user_input_case1():
     ]
 
 
+def get_test_month_count_list_case1():
+    return [7, 9, 12]
+
+
 def get_test_dict_case1():
     test_contributions = get_test_contributions_case1()
     return {

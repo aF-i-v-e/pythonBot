@@ -4,7 +4,7 @@ from bot.business_logic.search_utils.find_best_contribution_month import find_be
 from test.business_logic_test import create_test_data
 
 
-class FidBestContributionMonthTest(unittest.TestCase):
+class FindBestContributionMonthTest(unittest.TestCase):
     def test_find_best_contribution_month(self):
         test_cases = [
             [
