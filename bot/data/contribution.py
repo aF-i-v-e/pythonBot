@@ -11,7 +11,7 @@ class Contribution:
         self._contribution_name = ""
         self._package_services_price = 0
 
-    def Contribution(self, percent, start_sum, months_number, bank_name, contribution_name, package_services_price):
+    def __init__(self, percent, start_sum, months_number, bank_name, contribution_name, package_services_price):
         self._percent = percent
         self._start_sum = start_sum
         self._months_number = months_number
