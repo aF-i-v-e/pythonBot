@@ -2,6 +2,7 @@ import telebot
 from telebot import types
 from bot.api.user_input import UserInput
 from bot.response import bot_response
+from bot.response import month_count_buttons_info
 
 file = open('../../resources/bot_info.txt', 'r')
 token = file.readline().split()[2]
@@ -10,7 +11,10 @@ amount = 0
 name = 'Человек'
 term = 0
 user_input = UserInput("", 0, 0)
-answer = False
+is_amount_ready = False
+is_term_ready = False
+need_term = False
+month_keys = {}
 
 
 @bot.message_handler(commands=['start'])
@@ -23,8 +27,15 @@ def handle_start(message):
 
         Запускает бота и вызывает первые методы
         """
+    global is_amount_ready, is_term_ready, need_term, month_keys
+    month_keys = {}
+    is_amount_ready = False
+    is_term_ready = False
+    need_term = False
     send_welcome(message)
-    ask_about_term(message)
+    bot.send_message(message.from_user.id, 'Введи сумму вклада')
+    # ask_about_amount(message)
+    # ask_about_term(message)
 
 
 @bot.message_handler(commands=['help'])
@@ -84,12 +95,16 @@ def handle_messages(message):
             """
     user_input.print_data()
     print('Срок' + str(term))
-    if term == 0:
-        bot.send_message(message.from_user.id, 'Я не понимаю тебя, нажми /help')
-    elif term < 0:
-        ask_about_term_next(message.from_user.id)
-    else:
+    if not is_amount_ready:
         ask_about_amount(message)
+    elif not is_term_ready:
+        ask_about_term(message)
+        if need_term:
+            ask_about_term_next(message)
+        else:
+            bot.send_message(message.from_user.id, 'Я не понимаю тебя, нажми /help')
+    else:
+        show_results(message)
 
 
 def get_user_name(message):
@@ -133,7 +148,7 @@ def ask_about_term(message):
     keyboard.add(key_yes)
     key_no = types.InlineKeyboardButton(text='Пропустить', callback_data='disagree_term')
     keyboard.add(key_no)
-    bot.send_message(message.from_user.id, text='Давай приступим!\nДля начала скажи, ты хотел бы указать срок?',
+    bot.send_message(message, text='Давай приступим!\nДля начала скажи, ты хотел бы указать срок?',
                                                 reply_markup=keyboard)
 
 
@@ -144,18 +159,26 @@ def ask_about_term_next(message):
 
             message: полная информация от пользователя из телеграмма
             """
-    global term
+    global term, month_keys
     term = 0
     user_input.set_month_count(new_term=0)
     keyboard = types.InlineKeyboardMarkup()
-    key_3months = types.InlineKeyboardButton(text='3 месяца', callback_data='3months')
-    keyboard.add(key_3months)
-    key_9months = types.InlineKeyboardButton(text='9 месяцев', callback_data='9months')
-    keyboard.add(key_9months)
-    key_year = types.InlineKeyboardButton(text='1 год', callback_data='1year')
-    keyboard.add(key_year)
-    key_more = types.InlineKeyboardButton(text='Более', callback_data='more')
-    keyboard.add(key_more)
+    # key_3months = types.InlineKeyboardButton(text='3 месяца', callback_data='3months')
+    # keyboard.add(key_3months)
+    # key_9months = types.InlineKeyboardButton(text='9 месяцев', callback_data='9months')
+    # keyboard.add(key_9months)
+    # key_year = types.InlineKeyboardButton(text='1 год', callback_data='1year')
+    # keyboard.add(key_year)
+    # key_more = types.InlineKeyboardButton(text='Более', callback_data='more')
+    # keyboard.add(key_more)
+
+    month_list = month_count_buttons_info.get_month_count_from_contributions(user_input)
+    i = ''
+    for month in month_list:
+        i = str(month)
+        month_keys[i] = types.InlineKeyboardButton(text=str(month)+' мес.', callback_data=str(month))
+        keyboard.add(month_keys[i])
+
     bot.send_message(message, text='Ты хочешь оформить свой вклад на: ', reply_markup=keyboard)
 
 
@@ -188,6 +211,12 @@ def ask_about_amount(message):
     print('Сумма: ' + str(amount))
 
 
+def show_results(message):
+    bot.send_message(message, 'Класс! Вот, посмотри подобранные мной варианты: ')
+    result = bot_response.create_response_with_contribution(user_input)
+    bot.send_message(message, str(result))
+
+
 @bot.callback_query_handler(func=lambda call: True)
 def callback_worker(call):
     """Обработчик кнопок у сообщений.
@@ -196,43 +225,58 @@ def callback_worker(call):
 
                 message: полная информация от пользователя из телеграмма
                 """
-    global term
+    global term, need_term, is_term_ready, is_amount_ready
     msg = call.message.chat.id
     if call.data == "disagree_term":
-        term = 0.5
+        is_term_ready = False
+        need_term = False
+        term = 0
         user_input.set_month_count(new_term=term)
-        bot.send_message(msg, 'Введи сумму вклада')
+        # bot.send_message(msg, 'Введи сумму вклада')
+        show_results(msg)
     if call.data == "agree_term":
         term = -1
+        is_term_ready = False
+        need_term = True
         user_input.set_month_count(new_term=term)
         bot.send_message(msg, 'Отлично! Выбери срок')
         ask_about_term_next(msg)
-    if call.data == "3months":
-        term = 3
-        user_input.set_month_count(new_term=term)
-        bot.send_message(msg, 'Твой срок - 3 месяца')
-        bot.send_message(msg, 'Введи сумму вклада')
-    if call.data == "9months":
-        term = 9
-        user_input.set_month_count(new_term=term)
-        bot.send_message(msg, 'Твой срок - 9 месяцев')
-        bot.send_message(msg, 'Введи сумму вклада')
-    if call.data == "1year":
-        term = 12
-        user_input.set_month_count(new_term=term)
-        bot.send_message(msg, 'Твой срок - 1 год')
-        bot.send_message(msg, 'Введи сумму вклада')
-    if call.data == "more":
-        term = 36
-        user_input.set_month_count(new_term=term)
-        bot.send_message(msg, 'Твой срок - более 1 года')
-        bot.send_message(msg, 'Введи сумму вклада')
+    for data, button in month_keys.items():
+        if call.data == data:
+            term = int(data)
+            user_input.set_month_count(new_term=term)
+            bot.send_message(msg, 'Твой срок - ' + str(term) + 'мес.')
+            show_results(msg)
+    # if call.data == "3months":
+    #     term = 3
+    #     user_input.set_month_count(new_term=term)
+    #     bot.send_message(msg, 'Твой срок - 3 месяца')
+    #     bot.send_message(msg, 'Введи сумму вклада')
+    # if call.data == "9months":
+    #     term = 9
+    #     user_input.set_month_count(new_term=term)
+    #     bot.send_message(msg, 'Твой срок - 9 месяцев')
+    #     bot.send_message(msg, 'Введи сумму вклада')
+    # if call.data == "1year":
+    #     term = 12
+    #     user_input.set_month_count(new_term=term)
+    #     bot.send_message(msg, 'Твой срок - 1 год')
+    #     bot.send_message(msg, 'Введи сумму вклада')
+    # if call.data == "more":
+    #     term = 36
+    #     user_input.set_month_count(new_term=term)
+    #     bot.send_message(msg, 'Твой срок - более 1 года')
+    #     bot.send_message(msg, 'Введи сумму вклада')
     if call.data == "agreement":
-        bot.send_message(msg, 'Класс! Вот, посмотри подобранные мной варианты: ')
-        result = bot_response.create_response_with_contribution(user_input)
-        bot.send_message(msg, str(result))
+        bot.send_message(msg, 'Класс! Теперь давай выберем срок ')
+        is_amount_ready = True
+        ask_about_term(msg)
+        # bot.send_message(msg, 'Класс! Вот, посмотри подобранные мной варианты: ')
+        # result = bot_response.create_response_with_contribution(user_input)
+        # bot.send_message(msg, str(result))
     if call.data == "disagreement":
-        bot.send_message(msg, 'Напиши /start')
+        is_amount_ready = False
+        bot.send_message(msg, 'Введи сумму заново')
     user_input.print_data()
     print('Сумма: ' + str(amount))
     print('Срок: ' + str(term))

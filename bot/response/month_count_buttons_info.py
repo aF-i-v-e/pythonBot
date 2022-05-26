@@ -1,5 +1,5 @@
 from bot.business_logic.logic_utils.divide_contributions import identify_suitable_contributions
-from bot.data.contributions_manager import Parsing
+from bot.data.contributions_manager import ContributionManager
 
 
 def get_month_count_from_contributions(user_input):
@@ -11,9 +11,9 @@ def get_month_count_from_contributions(user_input):
       user_input: Входные данные пользователя.
 
       """
-    parsing = Parsing()
+    parsing = ContributionManager()
     contributions = parsing.get_list_contributions()
-    suitable_contributions = identify_suitable_contributions(contributions, user_input)
+    suitable_contributions = identify_suitable_contributions(contributions, user_input.get_amount())
     return get_month_count_list(suitable_contributions)
 
 
