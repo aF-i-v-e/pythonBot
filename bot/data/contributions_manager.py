@@ -53,6 +53,6 @@ class ContributionManager:
         print("Вклад некорректен " + contribution.get_bank_name() + " " + contribution.get_contribution_name())
 
 
-# cm = ContributionManager()
-# cm_list = cm.get_list_contributions()
-# print()
+cm = ContributionManager()
+cm_list = cm.get_list_contributions()
+print()

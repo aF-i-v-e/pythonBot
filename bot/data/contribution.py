@@ -1,17 +1,19 @@
-"""Класс, хранящий данные вклада"""
+"""Класс, хранящий данные вклада
+
+    Аргументы:
+
+    percent: Процент вклада
+    start_sum: Минимальная сумма вклада
+    months_number: Срок (кол-во месяцев вклада)
+    bank_name: Название банка
+    contribution_name: Название вклада
+    package_services_price: Цена подключения пакета дополнительных услуг
+"""
 
 
 class Contribution:
 
-    def __init__(self):
-        self._percent = 0
-        self._start_sum = 0
-        self._months_number = 0
-        self._bank_name = ""
-        self._contribution_name = ""
-        self._package_services_price = 0
-
-    def __init__(self, percent, start_sum, months_number, bank_name, contribution_name, package_services_price):
+    def __init__(self, percent=0, start_sum=0, months_number=0, bank_name="", contribution_name="", package_services_price=0):
         self._percent = percent
         self._start_sum = start_sum
         self._months_number = months_number
