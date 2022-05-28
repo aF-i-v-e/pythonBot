@@ -11,16 +11,26 @@ class ContributionManager:
     """Возвращает массив вкладов банков"""
 
     def get_list_contributions(self):
-        # alfa1 = Alfa1()
-        # self._list.extend(alfa1.get_contributions())
-        vuz_bank1 = VuzBank1()
-        v_z_1 = vuz_bank1.get_contribution()
-        self.try_add_contributions(v_z_1)
-        vuz_bank2 = VuzBank2()
-        self.try_add_contributions(vuz_bank2.get_contribution())
-        vuz_bank3 = VuzBank3()
-        self.try_add_contributions(vuz_bank3.get_contribution())
-        print(self._list)
+        # vuz_bank1 = VuzBank1()
+        # self.try_add_contributions(vuz_bank1.get_contribution())
+        # vuz_bank2 = VuzBank2()
+        # self.try_add_contributions(vuz_bank2.get_contribution())
+        # vuz_bank3 = VuzBank3()
+        # self.try_add_contributions(vuz_bank3.get_contribution())
+        # ubrr_bank1 = UbrrBank1()
+        # self.try_add_contributions(ubrr_bank1.get_contribution())
+        # ubrr_bank2 = UbrrBank2()
+        # self.try_add_contributions(ubrr_bank2.get_contribution())
+        # ubrr_bank3 = UbrrBank3()
+        # self.try_add_contributions(ubrr_bank3.get_contribution())
+        # alfa_bank1 = AlfaBank1()
+        # self.try_add_contributions(alfa_bank1.get_contribution())
+        # alfa_bank2 = AlfaBank2()
+        # self.try_add_contributions(alfa_bank2.get_contribution())
+        # tinkoff_bank1 = TinkoffBank1()
+        # self.try_add_contributions(tinkoff_bank1.get_contribution())
+        # sber_bank1 = SberBank1()
+        # self.try_add_contributions(sber_bank1.get_contribution())
         return self._list
 
     """Добавляет вклад в список, если он корректен"""
@@ -53,6 +63,6 @@ class ContributionManager:
         print("Вклад некорректен " + contribution.get_bank_name() + " " + contribution.get_contribution_name())
 
 
-cm = ContributionManager()
-cm_list = cm.get_list_contributions()
-print()
+# cm = ContributionManager()
+# cm_list = cm.get_list_contributions()
+# print()
