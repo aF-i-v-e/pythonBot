@@ -57,11 +57,11 @@ class TotalMoneyAmountTest(unittest.TestCase):
 
     def count_contribution_total_money_amount(self, user_input, contribution, expected_amount):
         actual_amount = count_contribution_total_money_amount(user_input, contribution)
-        self.assertEqual(expected_amount, round(actual_amount, 2))
+        self.assertEqual(expected_amount, actual_amount)
 
     def count_total_money_amount_bank(self, start_sum, percent, months_number, expected_amount):
         actual_amount = count_total_money_amount_bank(start_sum, percent, months_number)
-        self.assertEqual(expected_amount, round(actual_amount, 2))
+        self.assertEqual(expected_amount, actual_amount)
 
 
 if __name__ == '__main__':
