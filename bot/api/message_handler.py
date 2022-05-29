@@ -3,12 +3,13 @@ from telebot import types
 from bot.api.user_input import UserInput
 from bot.response import bot_response
 from bot.response import month_count_buttons_info
+from bot.response.bot_response_constants import BotResponseConstants
 
 file = open('../../resources/bot_info.txt', 'r')
 token = file.readline().split()[2]
 bot = telebot.TeleBot(token)
 amount = 0
-name = 'Человек'
+name = BotResponseConstants.user_name
 term = 0
 user_input = UserInput("", 0, 0)
 is_amount_ready = False
@@ -33,7 +34,7 @@ def handle_start(message):
     is_term_ready = False
     need_term = False
     send_welcome(message)
-    bot.send_message(message.from_user.id, 'Введи сумму вклада')
+    bot.send_message(message.from_user.id, BotResponseConstants.input_sum_response)
     # ask_about_amount(message)
     # ask_about_term(message)
 
@@ -48,7 +49,7 @@ def handle_help(message):
 
             Дает справку как запустить бота
             """
-    bot.send_message(message.from_user.id, 'Нажми /start')
+    bot.send_message(message.from_user.id, BotResponseConstants.push_start_response)
 
 
 @bot.message_handler(commands=['exit'])
@@ -61,11 +62,11 @@ def handle_exit(message):
 
             Останавливает бота
             """
-    user_input.set_name(new_name='Человек')
+    user_input.set_name(new_name=BotResponseConstants.user_name)
     user_input.set_amount(new_amount=0)
     user_input.set_month_count(new_term=0)
     user_input.print_data()
-    bot.send_message(message.from_user.id, 'До новых сообщений!')
+    bot.send_message(message.from_user.id, BotResponseConstants.goodbye_response)
     bot.stop_polling()
 
 
@@ -79,7 +80,7 @@ def handle_amount_again(message):
 
             Спрашивает заново сумму от пользователя
             """
-    bot.send_message(message.from_user.id, 'Введи сумму вклада')
+    bot.send_message(message.from_user.id, BotResponseConstants.input_sum_response)
     bot.register_next_step_handler(message, ask_about_amount)
 
 
@@ -94,7 +95,7 @@ def handle_messages(message):
             Обрабатывает обычные сообщения от пользователя
             """
     user_input.print_data()
-    print('Срок' + str(term))
+    print(BotResponseConstants.term + str(term))
     if not is_amount_ready:
         ask_about_amount(message)
     elif not is_term_ready:
@@ -102,7 +103,7 @@ def handle_messages(message):
         if need_term:
             ask_about_term_next(message)
         else:
-            bot.send_message(message.from_user.id, 'Я не понимаю тебя, нажми /help')
+            bot.send_message(message.from_user.id, BotResponseConstants.not_understand_response)
     else:
         show_results(message)
 
@@ -118,7 +119,7 @@ def get_user_name(message):
     name = message.from_user.first_name
     user_input.set_name(new_name=name)
     user_input.print_data()
-    print('Имя: ' + str(name))
+    print(BotResponseConstants.name + str(name))
 
 
 def send_welcome(message):
@@ -129,11 +130,9 @@ def send_welcome(message):
             message: полная информация от пользователя из телеграмма
             """
     get_user_name(message)
-    bot.send_message(message.from_user.id, 'Привет, ' + name + '!')
-    bot.send_message(message.from_user.id, 'Я умный бот, который поможет тебе разобраться с правильным '
-                                           'вложением твоих денег!')
-    bot.send_message(message.from_user.id, 'С моей помощью ты сможешь выбрать один из следующих банков: '
-                                           'Альфа, втб и тд потом заполним')
+    bot.send_message(message.from_user.id, BotResponseConstants.hello + name + '!')
+    bot.send_message(message.from_user.id, BotResponseConstants.welcome_response1)
+    bot.send_message(message.from_user.id, BotResponseConstants.welcome_response2)
 
 
 def ask_about_term(message):
@@ -144,12 +143,12 @@ def ask_about_term(message):
             message: полная информация от пользователя из телеграмма
             """
     keyboard = types.InlineKeyboardMarkup()
-    key_yes = types.InlineKeyboardButton(text='Выбрать срок', callback_data='agree_term')
+    key_yes = types.InlineKeyboardButton(text=BotResponseConstants.choose_term, callback_data='agree_term')
     keyboard.add(key_yes)
-    key_no = types.InlineKeyboardButton(text='Пропустить', callback_data='disagree_term')
+    key_no = types.InlineKeyboardButton(text=BotResponseConstants.miss, callback_data='disagree_term')
     keyboard.add(key_no)
-    bot.send_message(message, text='Давай приступим!\nДля начала скажи, ты хотел бы указать срок?',
-                                                reply_markup=keyboard)
+    bot.send_message(message, text=BotResponseConstants.want_to_specified_term,
+                     reply_markup=keyboard)
 
 
 def ask_about_term_next(message):
@@ -176,10 +175,11 @@ def ask_about_term_next(message):
     i = ''
     for month in month_list:
         i = str(month)
-        month_keys[i] = types.InlineKeyboardButton(text=str(month)+' мес.', callback_data=str(month))
+        month_keys[i] = types.InlineKeyboardButton(text=str(month) + BotResponseConstants.month,
+                                                   callback_data=str(month))
         keyboard.add(month_keys[i])
 
-    bot.send_message(message, text='Ты хочешь оформить свой вклад на: ', reply_markup=keyboard)
+    bot.send_message(message, text=BotResponseConstants.want_to_make_deposit_on, reply_markup=keyboard)
 
 
 def ask_about_amount(message):
@@ -195,24 +195,25 @@ def ask_about_amount(message):
     try:
         amount = abs(int(message.text))
     except Exception:
-        bot.send_message(message.from_user.id, 'Цифрами, пожалуйста')
+        bot.send_message(message.from_user.id, BotResponseConstants.digits_please_response)
         bot.register_next_step_handler(message, ask_about_amount)
         return
     if amount > 0:
         user_input.set_amount(new_amount=amount)
         keyboard = types.InlineKeyboardMarkup()
-        key_yes = types.InlineKeyboardButton(text='Да', callback_data='agreement')
+        key_yes = types.InlineKeyboardButton(text=BotResponseConstants.yes, callback_data='agreement')
         keyboard.add(key_yes)
-        key_no = types.InlineKeyboardButton(text='Нет', callback_data='disagreement')
+        key_no = types.InlineKeyboardButton(text=BotResponseConstants.no, callback_data='disagreement')
         keyboard.add(key_no)
-        bot.send_message(message.from_user.id, text='Ты хочешь оформить вклад на сумму: ' + str(amount) + '?',
-                         reply_markup=keyboard)
+        bot.send_message(message.from_user.id, text=BotResponseConstants
+                         .want_to_make_deposit_on_sum + str(amount) + '?'
+                         , reply_markup=keyboard)
     user_input.print_data()
-    print('Сумма: ' + str(amount))
+    print(BotResponseConstants.sum + str(amount))
 
 
 def show_results(message):
-    bot.send_message(message, 'Класс! Вот, посмотри подобранные мной варианты: ')
+    bot.send_message(message, BotResponseConstants.look_at_options)
     result = bot_response.create_response_with_contribution(user_input)
     bot.send_message(message, str(result))
 
@@ -239,13 +240,13 @@ def callback_worker(call):
         is_term_ready = False
         need_term = True
         user_input.set_month_count(new_term=term)
-        bot.send_message(msg, 'Отлично! Выбери срок')
+        bot.send_message(msg, BotResponseConstants.good_and_choose_term)
         ask_about_term_next(msg)
     for data, button in month_keys.items():
         if call.data == data:
             term = int(data)
             user_input.set_month_count(new_term=term)
-            bot.send_message(msg, 'Твой срок - ' + str(term) + 'мес.')
+            bot.send_message(msg, BotResponseConstants.your_term + str(term) + BotResponseConstants.month)
             show_results(msg)
     # if call.data == "3months":
     #     term = 3
@@ -268,7 +269,7 @@ def callback_worker(call):
     #     bot.send_message(msg, 'Твой срок - более 1 года')
     #     bot.send_message(msg, 'Введи сумму вклада')
     if call.data == "agreement":
-        bot.send_message(msg, 'Класс! Теперь давай выберем срок ')
+        bot.send_message(msg, BotResponseConstants.good_and_choose_term)
         is_amount_ready = True
         ask_about_term(msg)
         # bot.send_message(msg, 'Класс! Вот, посмотри подобранные мной варианты: ')
@@ -276,11 +277,11 @@ def callback_worker(call):
         # bot.send_message(msg, str(result))
     if call.data == "disagreement":
         is_amount_ready = False
-        bot.send_message(msg, 'Введи сумму заново')
+        bot.send_message(msg, BotResponseConstants.input_sum_response_again)
     user_input.print_data()
-    print('Сумма: ' + str(amount))
-    print('Срок: ' + str(term))
-    print('Имя: ' + str(name))
+    print(BotResponseConstants.sum + str(amount))
+    print(BotResponseConstants.term + str(term))
+    print(BotResponseConstants.name + str(name))
 
 
 bot.polling(none_stop=True, interval=0)

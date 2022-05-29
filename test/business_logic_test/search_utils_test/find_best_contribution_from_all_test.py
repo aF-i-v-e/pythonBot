@@ -10,8 +10,8 @@ class FindBestContributionFromAllTest(unittest.TestCase):
         contribution_dict = create_test_data.get_test_dict_case1()
         for test in test_cases:
             self.find_best_contribution_from_all(contribution_dict, test,
-                                                 create_test_data.create_test_contribution
-                                                 (15, 1000, 12, "Bank2", "Contribution2", 0),)
+                                                 create_test_data.create_test_contribution(
+                                                     4.85, 20000, 7, "Bank3", "Contribution1", 0),)
 
     def find_best_contribution_from_all(self, contribution_dict, user_input, expected_contribution):
         user_output = find_best_contribution_from_all(contribution_dict, user_input)
