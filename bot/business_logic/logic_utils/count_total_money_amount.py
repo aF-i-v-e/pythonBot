@@ -10,7 +10,7 @@ def count_contribution_total_money_amount(user_input, contribution):
         """
     total_money_amount = count_total_money_amount_bank(user_input.get_amount(), contribution.get_percent(),
                                                        contribution.get_months_number())
-    return total_money_amount - contribution.get_package_services_price()
+    return round(total_money_amount - contribution.get_package_services_price(), 2)
 
 
 def count_total_money_amount_bank(start_sum, percent, months_number):
@@ -20,8 +20,8 @@ def count_total_money_amount_bank(start_sum, percent, months_number):
 
     start_sum: Начальная сумма клада.
 
-    percent: Процент, который начисляется каждый месяц на сумму вклада.
+    percent: Годовой процент
 
     months_number: Срок действия вклада.
     """
-    return ((1 + percent / 100) ** months_number) * start_sum
+    return round(((1 + percent / 1200) ** months_number) * start_sum, 2)

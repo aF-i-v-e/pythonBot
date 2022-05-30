@@ -8,7 +8,7 @@ class FindBestContributionMonthTest(unittest.TestCase):
     def test_find_best_contribution_month(self):
         test_cases = [
             [
-                create_test_data.create_test_user_input(1500, 9),
+                create_test_data.create_test_user_input(45000, 9),
                 create_test_data.create_test_contribution(8, 1000, 9, "Bank1", "Contribution2", 0),
             ],
             [

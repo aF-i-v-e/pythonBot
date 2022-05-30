@@ -32,7 +32,7 @@ class FindBestContributionTest(unittest.TestCase):
             ],
             [
                 create_test_data.create_test_user_input(56478, 0),
-                create_test_data.create_test_contribution(15, 1000, 12, "Bank2", "Contribution2", 0)
+                create_test_data.create_test_contribution(4.85, 20000, 7, "Bank3", "Contribution1", 0),
             ],
         ]
         contributions = create_test_data.get_test_contributions_case1()
