@@ -39,4 +39,4 @@ class UserOutput:
     def get_string_representation(self):
         return str(self._user_input.get_string_representation())\
                + str(self._contribution.get_string_representation())\
-               + f"Итоговая сумма по данному вкладу будет составлять {self._total_money_amount} рублей.\n"
+               + f"\nИтоговая сумма по данному вкладу будет составлять {round(self._total_money_amount)} рублей.\n"

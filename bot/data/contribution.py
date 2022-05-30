@@ -67,9 +67,9 @@ class Contribution:
                 and self._package_services_price == other_contribution.get_package_services_price())
 
     def get_string_representation(self):
-        return f"Банк: {self._bank_name}, " \
-               f"Вклад: {self._contribution_name}, " \
-               f"Процент: {self._percent}%, " \
-               f"Срок вклада: {self._months_number}, " \
-               f"Минимальная начальная сумма вклада: {self._start_sum} рублей, " \
+        return f"Банк: {self._bank_name},\n" \
+               f"Вклад: {self._contribution_name},\n" \
+               f"Процент: {self._percent}%,\n" \
+               f"Срок вклада: {self._months_number},\n" \
+               f"Минимальная начальная сумма вклада: {self._start_sum} рублей,\n" \
                f"Стоимость пакета услуг: {self._package_services_price} рублей."

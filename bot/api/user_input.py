@@ -18,11 +18,11 @@ class UserInput:
         return self.month_count
 
     def get_string_representation(self):
-        s1 = f"Уважаемый пользователь {self.name}!\n" \
-             f"Ваша начальная сумма вклада составляет {str(self.amount)} рублей.\n"
+        s1 = f"Уважаемый пользователь {self.name}!\n\n" \
+             f"Ваша начальная сумма вклада составляет {str(self.amount)} рублей.\n\n"
         if self.month_count == 0:
-            return s1 + "Срок вклада: произвольный.\n"
-        return s1 + f"Срок вклада: {self.month_count}.\n"
+            return s1 + "Срок вклада: произвольный.\n\n"
+        return s1 + f"Срок вклада: {self.month_count}.\n\n"
 
     def set_name(self, new_name):
         self.name = new_name
