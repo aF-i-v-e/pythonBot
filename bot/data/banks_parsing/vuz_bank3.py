@@ -32,7 +32,7 @@ class VuzBank3:
             self.contribution.set_contribution_name(self.get_contribution_name())
             return self.contribution
         else:
-            print(self.__class__.__name__, ": status_code=" + str(bank_info.status_code))
+            print(self.__class__.__name__, ": status_code=" + str(bank_info.status_code) + " " + self._url)
 
     def get_percent(self):
         percent_text = self._response.xpath(

@@ -31,6 +31,18 @@ class ContributionManager:
         self.try_add_contributions(tinkoff_bank1.get_contribution())
         # sber_bank1 = SberBank1()
         # self.try_add_contributions(sber_bank1.get_contribution())
+        # vtb_bank1 = VtbBank1()
+        # self.try_add_contributions(vtb_bank1.get_contribution())
+        sinara_bank1 = SinaraBank1()
+        self.try_add_contributions(sinara_bank1.get_contribution())
+        sinara_bank2 = SinaraBank2()
+        self.try_add_contributions(sinara_bank2.get_contribution())
+        sinara_bank3 = SinaraBank3()
+        self.try_add_contributions(sinara_bank3.get_contribution())
+        rencredit_bank1 = RencreditBank1()
+        self.try_add_contributions(rencredit_bank1.get_contribution())
+        rencredit_bank2 = RencreditBank2()
+        self.try_add_contributions(rencredit_bank2.get_contribution())
         return self._list
 
     """Добавляет вклад в список, если он корректен"""
@@ -61,7 +73,6 @@ class ContributionManager:
 
     def error_message(self, contribution):
         print("Вклад некорректен " + contribution.get_bank_name() + " " + contribution.get_contribution_name())
-
 
 # cm = ContributionManager()
 # cm_list = cm.get_list_contributions()

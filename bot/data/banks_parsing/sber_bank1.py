@@ -33,7 +33,7 @@ class SberBank1:
             self.contribution.set_package_services_price(self.get_package_services_price())
             return self.contribution
         else:
-            print(self.__class__.__name__, ": status_code=" + str(bank_info.status_code) + self._url)
+            print(self.__class__.__name__, ": status_code=" + str(bank_info.status_code) + " " + self._url)
 
     def get_percent(self):
         percent_text = self._response.xpath(
